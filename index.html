@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأستاذ علي عبد الوهاب | رياضيات</title>
+    <meta name="description"
+        content="المنصة التعليمية للرياضيات مع الأستاذ علي عبد الوهاب. خبرة 20 عاماً في التميز والإبداع التعليمي.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Tajawal:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="splash.css">
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <!-- AI Splash Screen -->
+    <div id="loader" class="splash-screen">
+        <div class="splash-particles"></div>
+        <div class="splash-content">
+            <div class="ai-visual-container">
+                <div class="orbital-ring ring-1"></div>
+                <div class="orbital-ring ring-2"></div>
+                <div class="orbital-ring ring-3"></div>
+                <div class="core-glow">
+                    <i class="fas fa-atom fa-spin-slow"></i>
+                </div>
+                <div class="scanner-line"></div>
+            </div>
+            <div class="text-content">
+                <h1 class="splash-title">
+                    <span class="prefix">منصة الأستاذ</span>
+                    <span class="name">علي عبد الوهاب</span>
+                </h1>
+                <p class="splash-subtitle">عبقرية الرياضيات x قوة التكنولوجيا</p>
+            </div>
+            <div class="loading-container">
+                <div class="loading-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="loading-status">
+                    <span class="status-text">جاري تحميل البيانات...</span>
+                    <span class="percentage">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow" style="animation-delay: -7s; filter: hue-rotate(45deg); opacity: 0.1;"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <span>الأستاذ علي عبد الوهاب</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">الرئيسية</a></li>
+                <li><a href="#about">عن الأستاذ</a></li>
+                <li><a href="#grades">المراحل التعليمية</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-primary" onclick="scrollToGrades()">ابدأ الآن</button>
+            </div>
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Student Login Modal -->
+    <div id="student-login-modal" class="modal" style="display: none; z-index: 5000;">
+        <div class="modal-content glass">
+            <h2>تسجيل الدخول للمنصة</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">برجاء إدخال بياناتك للمتابعة</p>
+            <form id="student-login-form" onsubmit="handleStudentLogin(event)">
+                <div class="form-group">
+                    <label>الاسم بالكامل</label>
+                    <input type="text" id="student-name" placeholder="أدخل اسمك الثلاثي" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="student-phone" placeholder="أدخل رقم هاتفك" required>
+                </div>
+                <div class="form-group">
+                    <label>السنة الدراسية</label>
+                    <select id="student-grade" required>
+                        <option value="" disabled selected>اختر سنتك الدراسية</option>
+                        <option value="3mid">الصف الثالث الإعدادي</option>
+                        <option value="1sec">الصف الأول الثانوي</option>
+                        <option value="2sec">الصف الثاني الثانوي</option>
+                        <option value="3sec-sci">الصف الثالث الثانوي (علمي)</option>
+                        <option value="3sec-lit">الصف الثالث الثانوي (أدبي)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary w-100" style="margin-top: 20px;">دخول المنصة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content reveal-left">
+                    <div class="badge">نحو القمة في الرياضيات</div>
+                    <h1>الأستاذ <span class="gradient-text">علي عبد الوهاب</span> في مادة الرياضيات</h1>
+                    <p class="reveal"><span class="typing-container">الأستاذ علي عبد الوهاب - لتبسيط
+                            مفاهيم الرياضيات</span></p>
+                    <div class="hero-btns">
+                        <button class="btn-primary btn-lg" onclick="scrollToGrades()">اختر مرحلتك التعليمية</button>
+                        <button class="btn-outline btn-lg" onclick="openIntroVideo()"><i class="fas fa-play"></i> فيديو
+                            تعريفي</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="math-card reveal">
+                        <div class="card-glass">
+                            <img src="premium_math_logo_1770097196902.png" alt="Math Design" class="math-main-logo">
+                        </div>
+                    </div>
+                    <div class="floating-icons">
+                        <i class="fas fa-theta floating" style="--d: 1s; --x: 20%; --y: 10%;"></i>
+                        <i class="fas fa-pi floating" style="--d: 2s; --x: 80%; --y: 30%;"></i>
+                        <i class="fas fa-superscript floating" style="--d: 3s; --x: 10%; --y: 70%;"></i>
+                        <i class="fas fa-function floating" style="--d: 4s; --x: 70%; --y: 80%;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section reveal">
+            <div class="container">
+                <div class="about-wrapper">
+                    <div class="about-image">
+                        <div class="image-frame">
+                            <img src="teacher.jpg" alt="الأستاذ علي عبد الوهاب" class="teacher-portrait">
+                            <div class="experience-badge">
+                                <span>+20</span>
+                                <p>سنة من الخبرة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <div class="badge">علي عبد الوهاب</div>
+                        <h2>الأستاذ <span class="gradient-text">علي عبد الوهاب</span></h2>
+                        <h3>خبير مادة الرياضيات للمرحلة الإعدادية والثانوية</h3>
+                        <p>بخبرة تمتد لـ 20 عاماً في تدريس مادة الرياضيات، استطاع علي عبد الوهاب بناء منهجية تعليمية
+                            فريدة تركز على الفهم العميق قبل الحفظ. نهدف إلى جعل الرياضيات المادة الأمتع والأسهل في رحلتك
+                            الدراسية.</p>
+
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <h4>99%</h4>
+                                <p>نسبة النجاح</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>+2000</h4>
+                                <p>طالب متفوق</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>100</h4>
+                                <p>دروس مصورة</p>
+                            </div>
+                        </div>
+
+                        <div class="features-list">
+                            <div class="feature-line">
+                                <i class="fas fa-star"></i>
+                                <span>شرح مبسط يجمع بين التأسيس والتميز.</span>
+                            </div>
+                            <div class="feature-line">
+                                <i class="fas fa-star"></i>
+                                <span>نظام تقييم مستمر واختبارات تحاكي النظام الجديد.</span>
+                            </div>
+                            <div class="feature-line">
+                                <i class="fas fa-star"></i>
+                                <span>متابعة خاصة لكل طالب لضمان أعلى الدرجات.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Math Branches Section -->
+        <section id="branches" class="section reveal">
+            <div class="container">
+                <div class="section-header">
+                    <h2>فروع مادة <span class="gradient-text">الرياضيات</span> المسجلة</h2>
+                    <p>نقدم شرحاً وافياً وشاملاً لكافة فروع الرياضيات للمنهج المصري المطور</p>
+                </div>
+                <div class="branches-grid">
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-square-root-alt"></i>
+                        </div>
+                        <h3>الجبر</h3>
+                        <p>بناء الأسس الرياضية</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>الإحصاء</h3>
+                        <p>تحليل البيانات والاحتمالات</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>حساب المثلثات</h3>
+                        <p>دراسة الزوايا والنسب المثلثية</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-draw-polygon"></i>
+                        </div>
+                        <h3>الهندسة</h3>
+                        <p>والهندسة الفراغية</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3>التفاضل والتكامل</h3>
+                        <p>أساسيات التغيير والحركة</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3>الاستاتيكا</h3>
+                        <p>علم الاتزان والقوى</p>
+                    </div>
+                    <div class="branch-item">
+                        <div class="branch-icon-box">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>الديناميكا</h3>
+                        <p>قوانين الحركة والسرعة</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grade Selection Section -->
+        <section id="grades" class="section reveal">
+            <div class="container">
+                <div class="section-header">
+                    <h2>اختر مرحلتك التعليمية</h2>
+                    <p>نقدم محتوى متخصص لكل مرحلة دراسية لضمان أقصى استفادة</p>
+                </div>
+                <div class="grades-grid">
+                    <div class="grade-card" onclick="selectGrade('3mid')">
+                        <div class="grade-icon"><i class="fas fa-school"></i></div>
+                        <h3>الصف الثالث الإعدادي</h3>
+                        <p>تأسيس متين للثانوية العامة</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="grade-card" onclick="selectGrade('1sec')">
+                        <div class="grade-icon"><i class="fas fa-1"></i></div>
+                        <h3>الصف الأول الثانوي</h3>
+                        <p>بناء المفاهيم المتقدمة</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="grade-card" onclick="selectGrade('2sec')">
+                        <div class="grade-icon"><i class="fas fa-2"></i></div>
+                        <h3>الصف الثاني الثانوي</h3>
+                        <p>تعميق المهارات الرياضية</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="grade-card" onclick="selectGrade('3sec-sci')">
+                        <div class="grade-icon"><i class="fas fa-microscope"></i></div>
+                        <h3>الصف الثالث الثانوي (علمي)</h3>
+                        <p>تخصص العلوم والرياضيات</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="grade-card" onclick="selectGrade('3sec-lit')">
+                        <div class="grade-icon"><i class="fas fa-book"></i></div>
+                        <h3>الصف الثالث الثانوي (أدبي)</h3>
+                        <p>تخصص الشريعة والأدب</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Section (Initially Hidden) -->
+        <section id="content-display" class="section hidden">
+            <div class="container">
+                <div class="content-header">
+                    <button class="btn-back" onclick="goBackToGrades()"><i class="fas fa-arrow-right"></i>
+                        العودة</button>
+                    <h2 id="current-grade-title">اسم المرحلة</h2>
+                </div>
+
+                <!-- Branch Selection Bar -->
+                <div id="branch-selection" class="branch-tabs-container">
+                    <!-- Dynamic Branches Loaded from JS -->
+                </div>
+
+
+                <!-- Lessons & Exams Tabs -->
+                <div class="content-tabs">
+                    <button class="tab-btn active" data-tab="lessons">الدروس المرئية</button>
+                    <button class="tab-btn" data-tab="exams">الاختبارات</button>
+                    <button class="tab-btn" data-tab="files">المذكرات والملفات</button>
+                </div>
+
+                <div id="lessons-tab" class="tab-content active">
+                    <div id="lessons-list" class="items-grid">
+                        <!-- Dynamic Lessons -->
+                    </div>
+                </div>
+
+                <div id="exams-tab" class="tab-content">
+                    <div id="exams-list" class="items-grid">
+                        <!-- Dynamic Exams -->
+                    </div>
+                </div>
+
+                <div id="files-tab" class="tab-content">
+                    <div id="files-list" class="items-grid">
+                        <!-- Dynamic Files -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section -->
+        <section id="contact" class="section reveal">
+            <div class="container">
+                <div class="section-header">
+                    <h2>تواصل معنا</h2>
+                    <p>نحن هنا للرد على استفساراتكم ومساعدتكم في أي وقت</p>
+                </div>
+                <div class="contact-wrapper">
+                    <!-- Contact Form -->
+                    <div class="contact-form-container glass">
+                        <h3>أرسل لنا رسالة</h3>
+                        <form id="contact-form" onsubmit="handleContactForm(event)">
+                            <div class="form-group">
+                                <label>الاسم بالكامل</label>
+                                <input type="text" id="contact-name" placeholder="أدخل اسمك" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" id="contact-phone" placeholder="أدخل رقم هاتفك" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رسالتك</label>
+                                <textarea id="contact-message" placeholder="اكتب استفسارك هنا..." rows="4"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-100">
+                                إرسال عبر واتساب <i class="fab fa-whatsapp"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="contact-info-cards"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; width: 100%;">
+                        <!-- WhatsApp Card -->
+                        <div class="info-card">
+                            <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                            <h4>واتساب</h4>
+                            <p>01010034756</p>
+                            <a href="https://wa.me/201010034756" target="_blank" class="btn-link">مراسلة فورية</a>
+                        </div>
+                        <!-- Facebook Card -->
+                        <div class="info-card">
+                            <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                            <h4>فيسبوك</h4>
+                            <p>الصفحة الرسمية</p>
+                            <a href="https://www.facebook.com/share/1Azyn6A7Gx/" target="_blank" class="btn-link">زيارة
+                                الصفحة</a>
+                        </div>
+                        <!-- Call Card -->
+                        <div class="info-card">
+                            <i class="fas fa-phone-alt" style="color: #3b82f6;"></i>
+                            <h4>اتصل بنا</h4>
+                            <p>01010034756</p>
+                            <a href="tel:01010034756" class="btn-link">اتصال مباشر</a>
+                        </div>
+                        <!-- Vodafone Cash Card -->
+                        <div class="info-card">
+                            <i class="fas fa-wallet" style="color: #e60000;"></i>
+                            <h4>فودافون كاش</h4>
+                            <p>01010034756</p>
+                            <span class="btn-link" style="cursor: default;">لتحويل الرسوم</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal">&times;</span>
+            <h2>دخول المسؤول</h2>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="admin-password" placeholder="••••••••">
+            </div>
+            <button id="login-confirm" class="btn-primary w-100">دخول</button>
+        </div>
+    </div>
+
+    <!-- Intro Video Modal -->
+    <div id="intro-modal" class="modal">
+        <div class="modal-content video-modal-content glass">
+            <span class="close-modal" onclick="closeIntroVideo()">&times;</span>
+            <div class="video-container-wrapper" id="intro-video-wrapper">
+                <iframe id="intro-video-iframe" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                <div class="video-overlay-shield total-shield" onclick="togglePlayPause('intro')"
+                    ondblclick="toggleFullscreen('intro-video-wrapper')">
+                    <div class="play-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="shield-top"></div>
+                    <div class="shield-center-top"></div>
+                    <div class="shield-bottom-right"></div>
+                    <div class="shield-bottom-left"></div>
+                    <div class="custom-controls">
+                        <button class="custom-seek-btn" onclick="event.stopPropagation(); seek('intro', -10)"
+                            title="تراجع 10 ثواني">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <div class="progress-container" onclick="event.stopPropagation(); handleSeek(event, 'intro')">
+                            <div class="progress-bar" id="progress-intro"></div>
+                        </div>
+                        <button class="custom-seek-btn" onclick="event.stopPropagation(); seek('intro', 10)"
+                            title="تقدم 10 ثواني">
+                            <i class="fas fa redo"></i>
+                        </button>
+                        <button class="custom-fs-btn" title="تكبير الشاشة"
+                            onclick="event.stopPropagation(); toggleFullscreen('intro-video-wrapper')">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Overlay) -->
+    <div id="admin-dashboard" class="admin-overlay hidden">
+        <div class="admin-mobile-header">
+            <button class="admin-menu-toggle" onclick="hideAdminDashboard()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="admin-logo" style="margin-bottom: 0; font-size: 1.2rem;">لوحة التحكم</div>
+            <button class="admin-menu-toggle" onclick="toggleAdminSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="admin-container">
+            <div id="admin-sidebar" class="admin-sidebar">
+                <div class="admin-logo desktop-only">لوحة التحكم</div>
+                <ul class="admin-nav">
+                    <li class="active" data-section="dashboard"><i class="fas fa-chart-line"></i> الإحصائيات العامة</li>
+                    <li data-section="add-lesson"><i class="fas fa-video"></i> إضافة درس فيديو</li>
+                    <li data-section="add-exam"><i class="fas fa-file-alt"></i> إضافة اختبار</li>
+                    <li data-section="add-file"><i class="fas fa-file-pdf"></i> إضافة مذكرة/ملف</li>
+                    <li data-section="vouchers"><i class="fas fa-key"></i> أكواد التفعيل</li>
+                    <li data-section="students-list"><i class="fas fa-user-graduate"></i> قائمة الطلاب</li>
+                    <li data-section="visits-log"><i class="fas fa-history"></i> سجل الزيارات اليومية</li>
+                    <li data-section="manage-groups"><i class="fas fa-users-cog"></i> إدارة المجموعات</li>
+                    <li data-section="settings"><i class="fas fa-cog"></i> الإعدادات</li>
+                    <li data-section="reset-system" style="color: #ef4444;"><i class="fas fa-trash-alt"></i> تصفير
+                        النظام (بدء العمل الرسمي)</li>
+                </ul>
+                <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+            <div class="admin-main">
+                <div id="admin-content-area">
+                    <!-- Standard Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <div class="logo">
+                        <i class="fas fa-infinity"></i>
+                        <span>الأستاذ علي عبد الوهاب</span>
+                    </div>
+                    <p>نسخر التكنولوجيا لخدمة الطالب وتغيير نظرة الطلاب للرياضيات.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#grades">المراحل التعليمية</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>تابعنا</h3>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/share/1Azyn6A7Gx/" target="_blank" title="فيسبوك"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="https://wa.me/201010034756" target="_blank" title="واتساب"><i
+                                class="fab fa-whatsapp"></i></a>
+                        <a href="tel:01010034756" title="اتصل بنا"><i class="fas fa-phone"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 جميع الحقوق محفوظة - الأستاذ علي عبد الوهاب</p>
+                <p>تصميم المهندس <span class="gradient-text">أحمد عمرو ابوالحاج</span> 01001352771 | <button
+                        id="admin-login-btn" class="btn-admin-link">لوحة التحكم</button></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
