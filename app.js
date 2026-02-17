@@ -6,8 +6,8 @@ const firebaseConfig = {
     projectId: "aile-abd",
     storageBucket: "aile-abd.firebasestorage.app",
     messagingSenderId: "243705564010",
-    appId: "1:243705564010:web:f8f64be9914687867bf313",
-    measurementId: "G-6S48PVLHT2"
+    appId: "1:243705564010:web:8168b047a077082e7bf313",
+    measurementId: "G-XMNR9GSE6M"
 };
 
 // Initialize Firebase
@@ -19,6 +19,16 @@ const MATH_BRANCHES = ['الكل', 'الجبر', 'الإحصاء', 'حساب ا�
 // Initial Data Structure
 let appData = {
     grades: {
+        '1mid': {
+            title: 'الصف الأول الإعدادي',
+            groups: ['مجموعة 1'],
+            branches: ['الكل', 'جبر وإحتمالات', 'هندسة']
+        },
+        '2mid': {
+            title: 'الصف الثاني الإعدادي',
+            groups: ['مجموعة 1'],
+            branches: ['الكل', 'جبر وإحتمالات', 'هندسة']
+        },
         '3mid': {
             title: 'الصف الثالث الإعدادي',
             groups: ['مجموعة 1', 'مجموعة 2'],
@@ -77,7 +87,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
     }, 1000);
     initEventListeners();
-    checkStudentSession();
     initScrollReveal();
 });
 
@@ -98,15 +107,7 @@ function initScrollReveal() {
     revealElements.forEach(el => observer.observe(el));
 }
 
-function checkStudentSession() {
-    const session = localStorage.getItem('studentSession');
-    if (!session && !currentState.isAdmin) {
-        document.getElementById('student-login-modal').style.display = 'flex';
-    } else if (session) {
-        const student = JSON.parse(session);
-        logVisit(student);
-    }
-}
+
 
 async function loadInitialData() {
     try {
@@ -522,9 +523,19 @@ function renderAdminSection(section) {
             <!-- Grade Breakdown -->
             <div class="stats-grid" style="margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
                 <div class="stat-item glass type-mini">
+                    <span style="font-size: 2rem; color: #a0a0a0;">1</span>
+                    <h4>${appData.students.filter(s => s.grade === '1mid').length} طالب</h4>
+                    <p>أولى إعدادي</p>
+                </div>
+                <div class="stat-item glass type-mini">
+                    <span style="font-size: 2rem; color: #888;">2</span>
+                    <h4>${appData.students.filter(s => s.grade === '2mid').length} طالب</h4>
+                    <p>تانية إعدادي</p>
+                </div>
+                <div class="stat-item glass type-mini">
                     <span style="font-size: 2rem; color: var(--primary-light);">3</span>
                     <h4>${appData.students.filter(s => s.grade === '3mid').length} طالب</h4>
-                    <p>الشهادة الإعدادية</p>
+                    <p>تالتة إعدادي</p>
                 </div>
                 <div class="stat-item glass type-mini">
                     <span style="font-size: 2rem; color: #6366f1;">1</span>
@@ -538,7 +549,7 @@ function renderAdminSection(section) {
                 </div>
                 <div class="stat-item glass type-mini">
                     <span style="font-size: 2rem; color: #f59e0b;">3</span>
-                    <h4>${appData.students.filter(s => s.grade === '3sec').length} طالب</h4>
+                    <h4>${appData.students.filter(s => s.grade === '3sec-sci' || s.grade === '3sec-lit').length} طالب</h4>
                     <p>تالتة ثانوي</p>
                 </div>
             </div>
@@ -641,6 +652,8 @@ function renderAdminSection(section) {
                 <div class="form-group">
                     <label>المرحلة</label>
                     <select id="lesson-grade" onchange="updateAdminBranches('lesson')">
+                        <option value="1mid">الصف الأول الإعدادي</option>
+                        <option value="2mid">الصف الثاني الإعدادي</option>
                         <option value="3mid">الصف الثالث الإعدادي</option>
                         <option value="1sec">الصف الأول الثانوي</option>
                         <option value="2sec">الصف الثاني الثانوي</option>
@@ -700,6 +713,8 @@ function renderAdminSection(section) {
                 <div class="form-group">
                     <label>المرحلة</label>
                     <select id="exam-grade" onchange="updateAdminBranches('exam')">
+                        <option value="1mid">الصف الأول الإعدادي</option>
+                        <option value="2mid">الصف الثاني الإعدادي</option>
                         <option value="3mid">الصف الثالث الإعدادي</option>
                         <option value="1sec">الصف الأول الثانوي</option>
                         <option value="2sec">الصف الثاني الثانوي</option>
@@ -794,6 +809,8 @@ function renderAdminSection(section) {
                 <div class="form-group">
                     <label>المرحلة</label>
                     <select id="file-grade" onchange="updateAdminBranches('file')">
+                        <option value="1mid">الصف الأول الإعدادي</option>
+                        <option value="2mid">الصف الثاني الإعدادي</option>
                         <option value="3mid">الصف الثالث الإعدادي</option>
                         <option value="1sec">الصف الأول الثانوي</option>
                         <option value="2sec">الصف الثاني الثانوي</option>
@@ -853,10 +870,12 @@ function renderAdminSection(section) {
                 <div style="display: flex; gap: 10px;">
                     <select id="voucher-grade-filter" style="width: auto; margin-top: 0; padding: 5px 15px;" onchange="filterVouchersByGrade(this.value)">
                         <option value="all">كل المراحل</option>
-                        <option value="3mid">3 إعدادي (${stats['3mid']})</option>
-                        <option value="1sec">1 ثانوي (${stats['1sec']})</option>
-                        <option value="2sec">2 ثانوي (${stats['2sec']})</option>
-                        <option value="3sec">3 ثانوي (${stats['3sec']})</option>
+                        <option value="1mid">1 إعدادي</option>
+                        <option value="2mid">2 إعدادي</option>
+                        <option value="3mid">3 إعدادي</option>
+                        <option value="1sec">1 ثانوي</option>
+                        <option value="2sec">2 ثانوي</option>
+                        <option value="3sec">3 ثانوي</option>
                     </select>
                 </div>
             </div>
@@ -870,20 +889,28 @@ function renderAdminSection(section) {
                     <h4 style="color: #22c55e;">${unusedCount}</h4>
                     <p>أكواد متاحة</p>
                 </div>
-                  <div class="stat-item glass">
-                    <h4 style="color: #6366f1;">${stats['3mid']}</h4>
+                <div class="stat-item glass">
+                    <h4 style="color: #6366f1;">${appData.vouchers.filter(v => v.grade === '1mid').length}</h4>
+                    <p>1 إعدادي</p>
+                </div>
+                <div class="stat-item glass">
+                    <h4 style="color: #22c55e;">${appData.vouchers.filter(v => v.grade === '2mid').length}</h4>
+                    <p>2 إعدادي</p>
+                </div>
+                <div class="stat-item glass">
+                    <h4 style="color: #f59e0b;">${appData.vouchers.filter(v => v.grade === '3mid').length}</h4>
                     <p>3 إعدادي</p>
                 </div>
                 <div class="stat-item glass">
-                    <h4 style="color: #f59e0b;">${stats['1sec']}</h4>
+                    <h4 style="color: #6366f1;">${appData.vouchers.filter(v => v.grade === '1sec').length}</h4>
                     <p>1 ثانوي</p>
                 </div>
                 <div class="stat-item glass">
-                    <h4 style="color: #ef4444;">${stats['2sec']}</h4>
+                    <h4 style="color: #ef4444;">${appData.vouchers.filter(v => v.grade === '2sec').length}</h4>
                     <p>2 ثانوي</p>
                 </div>
                 <div class="stat-item glass">
-                    <h4 style="color: #a855f7;">${stats['3sec']}</h4>
+                    <h4 style="color: #a855f7;">${appData.vouchers.filter(v => v.grade === '3sec').length}</h4>
                     <p>3 ثانوي</p>
                 </div>
             </div>
@@ -1152,20 +1179,22 @@ function generateRandomCode(length = 10) {
 
 async function generateVouchers() {
     const gradesToGen = [
+        { id: '1mid', title: '1 إعدادي' },
+        { id: '2mid', title: '2 إعدادي' },
         { id: '3mid', title: '3 إعدادي' },
         { id: '1sec', title: '1 ثانوي' },
         { id: '2sec', title: '2 ثانوي' },
         { id: '3sec', title: '3 ثانوي' }
     ];
 
-    if (!confirm('هل أنت متأكد من توليد 250 كود لكل مرحلة (إجمالي 1000 كود)؟')) return;
+    if (!confirm('هل أنت متأكد من توليد أكواد لجميع المراحل (100 كود لكل مرحلة)؟')) return;
 
     const newVouchers = [];
     const chunks = [];
 
-    // Create 250 vouchers per grade
+    // Create 100 vouchers per grade
     gradesToGen.forEach(g => {
-        for (let i = 0; i < 250; i++) {
+        for (let i = 0; i < 100; i++) {
             const code = generateRandomCode(10);
             newVouchers.push({
                 code: code,
@@ -1244,45 +1273,7 @@ async function checkVoucher(btn) {
     }
 }
 
-async function handleStudentLogin(event) {
-    event.preventDefault();
-    const name = document.getElementById('student-name').value;
-    const phone = document.getElementById('student-phone').value;
-    const grade = document.getElementById('student-grade').value;
 
-    // Check if student already exists in our local data
-    let student = appData.students.find(s => s.phone === phone);
-
-    if (!student) {
-        const studentData = {
-            name,
-            phone,
-            grade,
-            createdAt: new Date().toISOString()
-        };
-
-        try {
-            const docRef = await db.collection('students').add(studentData);
-            studentData.id = docRef.id;
-            appData.students.unshift(studentData);
-            student = studentData;
-        } catch (error) {
-            console.error("Error saving student:", error);
-            return alert('حدث خطأ أثناء تسجيل الدخول');
-        }
-    } else {
-        // If student exists but they changed their grade in the form, you might want to update it
-        // but for "uniqueness", we just take the existing record.
-    }
-
-    localStorage.setItem('studentSession', JSON.stringify(student));
-    logVisit(student);
-    document.getElementById('student-login-modal').style.display = 'none';
-    alert(`أهلاً بك يا ${student.name} في منصة الأستاذ علي عبد الوهاب`);
-
-    // Auto select the student's grade
-    selectGrade(student.grade);
-}
 
 function printStudentsList() {
     const table = document.getElementById('printable-students-table').outerHTML;

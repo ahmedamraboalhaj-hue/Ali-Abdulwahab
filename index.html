@@ -87,35 +87,7 @@
         </div>
     </nav>
 
-    <!-- Student Login Modal -->
-    <div id="student-login-modal" class="modal" style="display: none; z-index: 5000;">
-        <div class="modal-content glass">
-            <h2>تسجيل الدخول للمنصة</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">برجاء إدخال بياناتك للمتابعة</p>
-            <form id="student-login-form" onsubmit="handleStudentLogin(event)">
-                <div class="form-group">
-                    <label>الاسم بالكامل</label>
-                    <input type="text" id="student-name" placeholder="أدخل اسمك الثلاثي" required>
-                </div>
-                <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="tel" id="student-phone" placeholder="أدخل رقم هاتفك" required>
-                </div>
-                <div class="form-group">
-                    <label>السنة الدراسية</label>
-                    <select id="student-grade" required>
-                        <option value="" disabled selected>اختر سنتك الدراسية</option>
-                        <option value="3mid">الصف الثالث الإعدادي</option>
-                        <option value="1sec">الصف الأول الثانوي</option>
-                        <option value="2sec">الصف الثاني الثانوي</option>
-                        <option value="3sec-sci">الصف الثالث الثانوي (علمي)</option>
-                        <option value="3sec-lit">الصف الثالث الثانوي (أدبي)</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary w-100" style="margin-top: 20px;">دخول المنصة</button>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Main Content -->
     <main>
@@ -273,6 +245,18 @@
                     <p>نقدم محتوى متخصص لكل مرحلة دراسية لضمان أقصى استفادة</p>
                 </div>
                 <div class="grades-grid">
+                    <div class="grade-card" onclick="selectGrade('1mid')">
+                        <div class="grade-icon"><i class="fas fa-school"></i></div>
+                        <h3>الصف الأول الإعدادي</h3>
+                        <p>تأسيس قوي في الرياضيات</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="grade-card" onclick="selectGrade('2mid')">
+                        <div class="grade-icon"><i class="fas fa-school"></i></div>
+                        <h3>الصف الثاني الإعدادي</h3>
+                        <p>تعميق المفاهيم الرياضية</p>
+                        <button class="btn-card">دخول <i class="fas fa-arrow-left"></i></button>
+                    </div>
                     <div class="grade-card" onclick="selectGrade('3mid')">
                         <div class="grade-icon"><i class="fas fa-school"></i></div>
                         <h3>الصف الثالث الإعدادي</h3>
