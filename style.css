@@ -2183,16 +2183,16 @@ select:focus {
     top: 0;
     left: 0;
     width: 100%;
-    height: 80px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+    height: 45px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
 }
 
 .shield-bottom-right {
-    bottom: 40px;
+    bottom: 35px;
     right: 0;
-    width: 160px;
-    height: 65px;
-    background: rgba(5, 5, 5, 0.9);
+    width: 130px;
+    height: 45px;
+    background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(10px);
     border-top-left-radius: 15px;
     display: flex;
@@ -2212,16 +2212,16 @@ select:focus {
 .shield-bottom-left {
     bottom: 0;
     left: 0;
-    width: 250px;
-    height: 100px;
+    width: 80px;
+    height: 40px;
 }
 
 .shield-center-top {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 60%;
-    height: 120px;
+    width: 50%;
+    height: 45px;
 }
 
 /* Custom Progress Bar for Radical Protection */

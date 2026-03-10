@@ -204,6 +204,7 @@ function initEventListeners() {
 }
 
 function selectGrade(gradeId) {
+    if (!appData.grades[gradeId]) return;
     currentState.selectedGrade = gradeId;
     currentState.selectedBranch = 'الكل';
     document.getElementById('grades').classList.add('hidden');
@@ -265,11 +266,13 @@ function renderContent() {
     // Check if THIS SPECIFIC GRADE is unlocked
     const isGradeUnlocked = localStorage.getItem(`unlocked_${currentState.selectedGrade}`) === 'true';
 
+    let lessonsHTML = '';
     filteredLessons.forEach(lesson => {
         const wrapperId = `vid-wrapper-${lesson.id}`;
         const playerId = `player-${lesson.id}`;
-        if (isGradeUnlocked) {
-            lessonsList.innerHTML += `
+
+        if (isGradeUnlocked || currentState.isAdmin) {
+            lessonsHTML += `
                 <div class="item-card">
                     <div class="video-preview-wrapper" id="${wrapperId}">
                         <div id="${playerId}"></div>
@@ -303,10 +306,8 @@ function renderContent() {
                     </div>
                 </div>
             `;
-            // Initialize player after element is in DOM
-            setTimeout(() => initYTPlayer(lesson.id, getYouTubeId(lesson.url)), 100);
         } else {
-            lessonsList.innerHTML += `
+            lessonsHTML += `
                 <div class="item-card locked-card" style="position: relative;">
                     <div class="video-preview-wrapper" style="background: #121212; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
                         <i class="fas fa-lock" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 15px;"></i>
@@ -324,6 +325,16 @@ function renderContent() {
             `;
         }
     });
+
+    if (filteredLessons.length) {
+        lessonsList.innerHTML = lessonsHTML;
+        // Initialize players AFTER the whole list is rendered
+        filteredLessons.forEach(lesson => {
+            if (isGradeUnlocked || currentState.isAdmin) {
+                setTimeout(() => initYTPlayer(lesson.id, getYouTubeId(lesson.url)), 150);
+            }
+        });
+    }
 
     // Exams
     const filteredExams = appData.exams.filter(branchFilter);
@@ -363,10 +374,10 @@ function renderContent() {
 function getYouTubeId(url) {
     if (!url) return 'dQw4w9WgXcQ';
     url = url.trim();
-    if (url.length === 11 && !url.includes('/') && !url.includes('.')) return url;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : 'dQw4w9WgXcQ';
+    // Support shorts and watch/v/embed
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return (match && match[1]) ? match[1] : (url.length === 11 ? url : 'dQw4w9WgXcQ');
 }
 
 let currentExamData = null;
@@ -915,10 +926,25 @@ function renderAdminSection(section) {
                 </div>
             </div>
             
-            <div class="hero-btns" style="margin-bottom: 30px;">
+            <div class="hero-btns" style="margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 10px;">
                 <button class="btn-primary" onclick="generateVouchers()">
                     <i class="fas fa-magic"></i> توليد 1000 كود جديد
                 </button>
+                <div style="display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 8px;">
+                    <select id="print-grade" style="margin-top: 0; padding: 8px; border-radius: 4px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5); color: white;">
+                        <option value="all">الكل</option>
+                        <option value="1mid">1 إعدادي</option>
+                        <option value="2mid">2 إعدادي</option>
+                        <option value="3mid">3 إعدادي</option>
+                        <option value="1sec">1 ثانوي</option>
+                        <option value="2sec">2 ثانوي</option>
+                        <option value="3sec">3 ثانوي</option>
+                    </select>
+                    <input type="number" id="print-count" placeholder="العدد" style="width: 80px; padding: 8px; border-radius: 4px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5); color: white;" min="1">
+                    <button class="btn-primary" style="background: #3b82f6;" onclick="printVouchersBatch()">
+                        <i class="fas fa-print"></i> طباعة الأكواد
+                    </button>
+                </div>
             </div>
 
             <div class="vouchers-table-container">
@@ -1187,14 +1213,14 @@ async function generateVouchers() {
         { id: '3sec', title: '3 ثانوي' }
     ];
 
-    if (!confirm('هل أنت متأكد من توليد أكواد لجميع المراحل (100 كود لكل مرحلة)؟')) return;
+    if (!confirm('هل أنت متأكد من توليد أكواد لجميع المراحل (167 كود لكل مرحلة - إجمالي 1000 كود)؟')) return;
 
     const newVouchers = [];
     const chunks = [];
 
-    // Create 100 vouchers per grade
+    // Create approx 167 vouchers per grade to reach 1000
     gradesToGen.forEach(g => {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 167; i++) {
             const code = generateRandomCode(10);
             newVouchers.push({
                 code: code,
@@ -1288,6 +1314,88 @@ function printStudentsList() {
     win.print();
 }
 
+function printVouchersBatch() {
+    const filterGrade = document.getElementById('print-grade').value;
+    const countInput = document.getElementById('print-count').value;
+    const count = parseInt(countInput);
+
+    if (!count || count <= 0) return alert('برجاء إدخال عدد صحيح للأكواد المراد طباعتها');
+
+    // Get available (unused and active) vouchers
+    let availableVouchers = appData.vouchers.filter(v => !v.isUsed && v.isActive !== false);
+
+    if (filterGrade !== 'all') {
+        availableVouchers = availableVouchers.filter(v => v.grade === filterGrade);
+    }
+
+    if (availableVouchers.length < count) {
+        return alert(`لا يوجد سوى ${availableVouchers.length} كود متاح لهذه المرحلة. برجاء توليد أكواد جديدة أو تقليل العدد.`);
+    }
+
+    const vouchersToPrint = availableVouchers.slice(0, count);
+    
+    // Build print HTML
+    printVouchersHTML(vouchersToPrint);
+}
+
+function printSingleVoucher(code, gradeTitle) {
+    const voucher = { code, gradeTitle };
+    printVouchersHTML([voucher], true);
+}
+
+function printVouchersHTML(vouchers, isSingle = false) {
+    const win = window.open('', '', 'height=700,width=900');
+    win.document.write('<html><head><title>طباعة الأكواد</title>');
+    win.document.write(`
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+            body { direction: rtl; font-family: 'Tajawal', Tahoma, sans-serif; padding: 20px; background: #f4f4f4; }
+            .voucher-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+            .voucher-card { 
+                background: white; border: 2px dashed #444; padding: 20px; text-align: center; 
+                border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center;
+            }
+            .v-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 15px; color: #111; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+            .v-code { font-family: 'Courier New', monospace; font-size: 2rem; letter-spacing: 4px; background: #f8f9fa; padding: 15px; border: 1px solid #ddd; margin: 15px 0; border-radius: 8px; font-weight: bold; color: #d32f2f; }
+            .v-grade { font-size: 1.1rem; color: #333; font-weight: bold; }
+            .v-footer { margin-top: 15px; font-size: 0.9rem; color: #666; font-weight: bold; }
+            @media print {
+                body { background: white; margin: 0; padding: 10px; }
+                .voucher-card { page-break-inside: avoid; border: 2px dashed #000; box-shadow: none; margin-bottom: 15px; }
+                .voucher-grid { gap: 15px; display: flex; flex-wrap: wrap; justify-content: space-around; }
+                .voucher-card { width: 45%; }
+            }
+        </style>
+    `);
+    win.document.write('</head><body>');
+    win.document.write('<h2 style="text-align:center; margin-bottom:30px;">أكواد التفعيل المخصصة - الأستاذ علي عبد الوهاب</h2>');
+    win.document.write('<div class="voucher-grid">');
+    
+    vouchers.forEach(v => {
+        const gradeTitle = v.gradeTitle || (appData.grades[v.grade]?.title || 
+                    (v.grade === '3sec' ? 'الثالث الثانوي' :
+                    (v.grade === '3mid' ? 'الثالث الإعدادي' :
+                        (v.grade === '1sec' ? 'الأول الثانوي' :
+                            (v.grade === '2sec' ? 'الثاني الثانوي' : v.grade || 'غير محدد')))));
+                            
+        win.document.write(`
+            <div class="voucher-card">
+                <div class="v-title">كود تفعيل المنصة</div>
+                <div class="v-grade">${gradeTitle}</div>
+                <div class="v-code">${v.code}</div>
+                <div class="v-footer">المنصة التعليمية - أ. علي عبد الوهاب</div>
+            </div>
+        `);
+    });
+
+    win.document.write('</div></body></html>');
+    win.document.close();
+    
+    setTimeout(() => {
+        win.print();
+    }, 500);
+}
+
 async function logVisit(student) {
     if (!student) return;
 
@@ -1347,8 +1455,7 @@ function initYTPlayer(id, videoId, elementId = null) {
             'iv_load_policy': 3,
             'disablekb': 1,
             'fs': 0,
-            'enablejsapi': 1,
-            'origin': window.location.origin
+            'enablejsapi': 1
         },
         events: {
             'onStateChange': (event) => onPlayerStateChange(event, id)
@@ -1568,9 +1675,14 @@ function renderVoucherRows(vouchers) {
                         </span>
                     </td>
                     <td>
-                        <button class="btn-primary" style="background: ${active ? '#f59e0b' : '#22c55e'}; padding: 5px 10px;" onclick="toggleVoucherStatus('${v.id}', ${active})">
-                            <i class="fas fa-${active ? 'pause' : 'play'}"></i> ${active ? 'إغلاق' : 'تفعيل'}
-                        </button>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <button class="btn-primary" style="background: #3b82f6; padding: 5px 10px;" onclick="printSingleVoucher('${v.code}', '${gradeTitle}')" title="طباعة">
+                                <i class="fas fa-print"></i> طباعة
+                            </button>
+                            <button class="btn-primary" style="background: ${active ? '#f59e0b' : '#22c55e'}; padding: 5px 10px;" onclick="toggleVoucherStatus('${v.id}', ${active})">
+                                <i class="fas fa-${active ? 'pause' : 'play'}"></i> ${active ? 'إغلاق' : 'تفعيل'}
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
